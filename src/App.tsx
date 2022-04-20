@@ -1,26 +1,31 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Dashboard from './pages/Dashboard';
+import { Admin, Resource } from 'react-admin';
+import { UsersList } from './pages/users';
+import authProvider from './providers/authProvider';
+import simpleRestProvider from './providers/ra-strapi-rest';
+import {API_BASE_URL} from "./constants/api";
+import { Layout } from "./components/layout";
+import { Login } from "./components/layout";
+import {lightTheme, darkTheme} from "./components/layout/themes";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+import events from './pages/events';
+
+const dataProvider = simpleRestProvider(API_BASE_URL);
+
+const App = () => (
+        <Admin
+            title=""
+            dashboard={Dashboard}
+            dataProvider={dataProvider}
+            loginPage={Login}
+            layout={Layout}
+            theme={lightTheme}
+            // authProvider={authProvider}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+            <Resource name="users" list={UsersList} />
+            <Resource name="events" {...events}/>
+        </Admin>
+);
 
 export default App;
